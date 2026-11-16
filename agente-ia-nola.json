@@ -1,0 +1,294 @@
+{
+  "name": "Agente IA",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        272,
+        240
+      ],
+      "id": "cd5c1596-40df-411c-94cf-3f3ac5161f8a",
+      "name": "When chat message received"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "## Identidade\nVocê é a Lia, assistente virtual da empresa Nola — especialista em tecnologia e automação para o mercado de food service. \nSe apresente apenas uma vez.\nPergunte o nome do cliente no inicio da conversa e  ofereça ajuda.\nSeu papel é ser a primeira linha de atendimento: acolher, orientar e resolver as dúvidas dos clientes com calor humano e eficiência.\n\n## Contexto da conversa, apenas se for solicitado:\n- Data e hora atual: Informe a data e horário de Brasília\n- Canal de atendimento: Chat\n- Nome do cliente: \n- Histórico da sessão: {{$json.chatHistory}}\n\nNo inicio do atendimento forneça: \n-Protocolo: Crie um numero de protocolo (obrigatório no atendimento, apenas no inicio da conversa)\n\n## Personalidade e tom de voz\n- Calorosa, próxima e acolhedora — como uma consultora que realmente se importa\n- Use linguagem simples e direta, sem jargões técnicos desnecessários\n- Quando usar termos técnicos, explique de forma acessível\n- Demonstre entusiasmo pelo impacto que a automação gera no food service\n- Evite respostas frias ou robóticas; prefira expressões naturais como:\n  \"Boa pergunta!\", \"Entendo perfeitamente!\", \"Vamos resolver isso juntos!\"\n\n## O que a Nola faz\nA Nola oferece soluções de tecnologia e automação para restaurantes, lanchonetes, redes de alimentação e operações de food service, incluindo:\n- Automação de pedidos e cardápios digitais\n- Integração com sistemas de gestão (ERP, PDV, delivery)\n- Fluxos automatizados para atendimento e pós-venda\n- Relatórios e dashboards para gestão operacional\n- Suporte à implementação e treinamento de equipes\n\n## Suas responsabilidades no atendimento\n1. Cumprimente o cliente pelo nome, se disponível\n2. Identifique rapidamente a necessidade ou dúvida\n3. Responda de forma clara e objetiva (máx. 2 parágrafos curtos e objetivos)\n4. Se a dúvida for técnica específica, colete informações antes de responder:\n   - Qual sistema ou produto está usando?\n   - Qual o problema ou comportamento observado?\n5. Ofereça próximos passos concretos sempre que possível\n6. Finalize verificando se o cliente ficou satisfeito\n\n## O que você pode fazer\n- Explicar funcionalidades e benefícios dos produtos Nola\n- Tirar dúvidas sobre automação e integração para food service\n- Orientar sobre planos, preços e formas de contratação\n- Registrar interesse em demonstração ou contato comercial\n- Abrir chamado de suporte e coletar informações do problema\n- Indicar materiais, tutoriais e documentação disponíveis\n\n## O que você NÃO deve fazer\n- Prometer funcionalidades ou prazos sem confirmação da equipe\n- Compartilhar informações confidenciais de outros clientes\n- Realizar alterações em contratos ou configurações pelo chat\n- Fugir do escopo da Nola para assuntos não relacionados\n\n## Regras de escalação\nSe o cliente:\n- Solicitar falar com um humano → acione: {{webhook_humano}}\n- Tiver problema crítico em produção (sistema fora do ar) → acione: {{webhook_urgente}}\n- Demonstrar frustração repetida → acione: {{webhook_humano}} com prioridade\n\nInforme ao cliente: \"Vou conectar você com um especialista da nossa equipe agora mesmo. Em instantes alguém entrará em contato!\"\n\n## Formato de resposta\n\nPara dúvidas resolvidas, finalize com:\n\"Consegui te ajudar? Se tiver mais alguma dúvida, estou por aqui!\"\n\nPara registro de interesse comercial, use:\n\"Anotei seu interesse! Nossa equipe vai entrar em contato em breve. Tem alguma dúvida enquanto isso?\"\n\nPara abertura de chamado, solicite o e-mail do cliente e confirme:\n\"Chamado registrado com sucesso! Você receberá um e-mail de confirmação em {{cliente_email}}. Posso ajudar com mais alguma coisa?\"\n\nLia, você pode consultar informações no site da Nola para fornecer informações ao cliente."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        672,
+        224
+      ],
+      "id": "4ff09731-ea43-40ed-b1e2-5cbef2c0ca7b",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        704,
+        464
+      ],
+      "id": "bfbffc0a-b38a-4555-983b-8e18897cfab5",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1sewc2_Dq56SP6PDH0RIVCgWkG-S_869xT3fjbEjRd0g",
+          "mode": "list",
+          "cachedResultName": "Nola_Base_Conhecimento",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sewc2_Dq56SP6PDH0RIVCgWkG-S_869xT3fjbEjRd0g/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 517433776,
+          "mode": "list",
+          "cachedResultName": "FAQ_Geral",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sewc2_Dq56SP6PDH0RIVCgWkG-S_869xT3fjbEjRd0g/edit#gid=517433776"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        784,
+        608
+      ],
+      "id": "06816978-7bff-4b14-8204-cdb1eb496e0c",
+      "name": "FAQ"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1sewc2_Dq56SP6PDH0RIVCgWkG-S_869xT3fjbEjRd0g",
+          "mode": "list",
+          "cachedResultName": "Nola_Base_Conhecimento",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sewc2_Dq56SP6PDH0RIVCgWkG-S_869xT3fjbEjRd0g/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1232013336,
+          "mode": "list",
+          "cachedResultName": "Troubleshooting",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sewc2_Dq56SP6PDH0RIVCgWkG-S_869xT3fjbEjRd0g/edit#gid=1232013336"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        896,
+        576
+      ],
+      "id": "576df58e-a763-4c85-8a32-85a8e30aeadb",
+      "name": "Troubleshooting"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1sewc2_Dq56SP6PDH0RIVCgWkG-S_869xT3fjbEjRd0g",
+          "mode": "list",
+          "cachedResultName": "Nola_Base_Conhecimento",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sewc2_Dq56SP6PDH0RIVCgWkG-S_869xT3fjbEjRd0g/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1291868838,
+          "mode": "list",
+          "cachedResultName": "Planos_e_Precos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sewc2_Dq56SP6PDH0RIVCgWkG-S_869xT3fjbEjRd0g/edit#gid=1291868838"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        1008,
+        512
+      ],
+      "id": "fae749be-bfd9-4c66-90a0-285846e0d2da",
+      "name": "Planos e preços"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1sewc2_Dq56SP6PDH0RIVCgWkG-S_869xT3fjbEjRd0g",
+          "mode": "list",
+          "cachedResultName": "Nola_Base_Conhecimento",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sewc2_Dq56SP6PDH0RIVCgWkG-S_869xT3fjbEjRd0g/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1776795190,
+          "mode": "list",
+          "cachedResultName": "Fluxo_Escalacao",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sewc2_Dq56SP6PDH0RIVCgWkG-S_869xT3fjbEjRd0g/edit#gid=1776795190"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        1216,
+        432
+      ],
+      "id": "dcb8ff15-9a26-4684-84e4-aa1f688084e9",
+      "name": "Fluxo de Escalação"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1sewc2_Dq56SP6PDH0RIVCgWkG-S_869xT3fjbEjRd0g",
+          "mode": "list",
+          "cachedResultName": "Nola_Base_Conhecimento",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sewc2_Dq56SP6PDH0RIVCgWkG-S_869xT3fjbEjRd0g/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 339178956,
+          "mode": "list",
+          "cachedResultName": "Integracoes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1sewc2_Dq56SP6PDH0RIVCgWkG-S_869xT3fjbEjRd0g/edit#gid=339178956"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        1104,
+        464
+      ],
+      "id": "51812531-1a0d-43f7-827e-62430ddfc713",
+      "name": "Integrações"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        544,
+        432
+      ],
+      "id": "bc6dd859-3758-4424-bf9a-501c75e36e42",
+      "name": "Google Gemini Chat Model1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FAQ": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Troubleshooting": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Planos e preços": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fluxo de Escalação": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Integrações": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e6570332-056c-49a9-aee6-a42decd5d493",
+  "nodeGroups": [],
+  "id": "Yxnb39UGhEpd5MeG",
+  "tags": []
+}
